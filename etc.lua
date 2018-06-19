@@ -11,8 +11,7 @@ Buffer = {}
 Buffer.__index = Buffer
 
 function Buffer:new(array)
-   local buff = {}  
-   setmetatable(buff, Buffer)
+   local buff = {}
    if array == nil then
       buff.data = {}
    else
@@ -26,6 +25,7 @@ function Buffer:new(array)
    end
    buff.wpos = #buff.data + 1
    buff.rpos = 1
+   setmetatable(buff, Buffer)
    return buff
 end
 
@@ -67,7 +67,6 @@ function Buffer:writeUint(x)
 		self:writeByte(bit.band(bit.bor(c, 0x80), 0xFF))
 		c = bit.brshift(c, 7)
 	end
-
  	self:writeByte(bit.band(c, 0xFF))
 end
 
@@ -216,8 +215,9 @@ function Buffer:writeBinaryString(x)
 end
 
 function Buffer:readString()
-  i = self:readUint()
-  str = self:readBinaryString(i)
+  print(type(self))
+  local i = self:readUint()
+  local str = self:readBinaryString(i)
   return str
 end
 
@@ -225,3 +225,7 @@ function Buffer:writeString(v)
   self:writeUint(#v)
   self:writeBinaryString(v)
 end
+
+-- cleave export
+return Buffer
+
